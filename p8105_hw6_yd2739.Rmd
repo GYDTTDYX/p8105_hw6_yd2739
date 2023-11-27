@@ -167,12 +167,23 @@ birthweight_df = read_csv("data/birthweight.csv")|>
     mrace = fct_infreq(mrace))
 ```
 
+So, first considerndata leakage, I will not include any data that gathered after baby birth. So babysex, bhead, blength are not included in our model. Also, ppbmi, ppwt, mheigth, wtgain might have multicollineality problem. I decide drop ppbmi and wtgain.(since these are all calculated by other variables). I'm not sure malform is detected after or before giving birth, so I also excluded it. 
+
+Then I choose to fit a model and decide variables I will keep using their coefficient's p-value.
+
+```{r}
+tes_lm = lm(bwt ~  delwt + fincome + frace + mheight + momage + mrace + parity + pnumlbw + pnumsga + ppwt +  menarche + gaweeks + smoken, data = birthweight_df)
+summary(tes_lm)
+```
+
+Obviously there are colinearlity in our dataset and caused Na coeffcient. We will exclude pnumsga, pnumlbw in our analysis. Also, we only choose the most significant variables. They are : delwt, mheight, ppwt, gaweeks, smoken. 
+
 I think my model will contain mother’s weight at delivery (pounds), gestational age in weeks, smoken, 
 
 ```{r}
-proposed_lm = lm(bwt ~  delwt + gaweeks + smoken, data = birthweight_df)
+proposed_lm = lm(bwt ~  delwt + mheight + ppwt + gaweeks + smoken, data = birthweight_df)
 prediction_result = birthweight_df|>
-  subset(select = c(delwt, gaweeks, smoken, bwt))|>
+  subset(select = c(delwt, mheight, ppwt, gaweeks, smoken, bwt))|>
   modelr::add_predictions(proposed_lm)|>
   modelr::add_residuals(proposed_lm)
 ```
@@ -192,7 +203,7 @@ cv_df =
 cv_df = 
   cv_df |> 
   mutate(
-    proposed_mod  = map(train, \(df) lm(bwt ~  delwt + gaweeks + smoken, data = df)),
+    proposed_mod  = map(train, \(df) lm(bwt ~ delwt + mheight + ppwt + gaweeks + smoken, data = df)),
     length_gestation_mod  = map(train, \(df) lm(bwt ~  blength + gaweeks, data = df)),
     interact_mod  = map(train, \(df) lm(bwt ~  bhead + blength + babysex + bhead * blength + blength* babysex + bhead* babysex + bhead * blength * babysex, data = df))) |> 
   mutate(

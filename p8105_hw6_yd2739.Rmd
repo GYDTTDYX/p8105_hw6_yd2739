@@ -178,8 +178,6 @@ summary(tes_lm)
 
 Obviously there are colinearlity in our dataset and caused Na coeffcient. We will exclude pnumsga, pnumlbw in our analysis. Also, we only choose the most significant variables. They are : delwt, mheight, ppwt, gaweeks, smoken. 
 
-I think my model will contain mother’s weight at delivery (pounds), gestational age in weeks, smoken, 
-
 ```{r}
 proposed_lm = lm(bwt ~  delwt + mheight + ppwt + gaweeks + smoken, data = birthweight_df)
 prediction_result = birthweight_df|>

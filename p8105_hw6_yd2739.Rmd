@@ -137,10 +137,10 @@ p2_result|>
 
 ```{r}
 p2_result|>
-  pull(coefficient_product)|>
+  pull(log_coefficient_product)|>
   quantile(c(0.025, 0.975), na.rm = TRUE)
 ```
-We could see that the coefficient product's log result is left skewed. There are also lots of Na in the dataset caused by negative product of the coefficient. The 2.5% quantile of coefficient product's log is -0.009531940, the 97.5% quantile of coefficient product's log is 0.007972366. 
+We could see that the coefficient product's log result is left skewed. There are also lots of Na in the dataset caused by negative product of the coefficient. The 2.5% quantile of coefficient product's log is -8.801647, the 97.5% quantile of coefficient product's log is -4.588863.
 ```{r}
 p2_result|>
   ggplot(aes(x = r.squared))+

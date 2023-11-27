@@ -129,6 +129,31 @@ r_squared_result = boot_straps_result|>
 p2_result = left_join(betas_result, r_squared_result, by = ".id")
 ```
 
+```{r}
+p2_result|>
+  ggplot(aes(x = log_coefficient_product))+
+  geom_density()
+```
+
+```{r}
+p2_result|>
+  pull(coefficient_product)|>
+  quantile(c(0.025, 0.975), na.rm = TRUE)
+```
+We could see that the coefficient product's log result is left skewed. There are also lots of Na in the dataset caused by negative product of the coefficient. The 2.5% quantile of coefficient product's log is -0.009531940, the 97.5% quantile of coefficient product's log is 0.007972366. 
+```{r}
+p2_result|>
+  ggplot(aes(x = r.squared))+
+  geom_density()
+```
+
+```{r}
+p2_result|>
+  pull(r.squared)|>
+  quantile(c(0.025, 0.975), na.rm = TRUE)
+```
+The r^2 is less skewed and is approximately normal. We could see it is still slightly left skewed. The 2.5% quantile of coefficient product's log is 0.8889543, the 97.5% quantile of coefficient product's log is 0.9407838. 
+
 ## Problem 3
 ```{r}
 #male  = 1, female = 0

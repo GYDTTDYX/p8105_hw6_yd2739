@@ -189,6 +189,18 @@ prediction_result = birthweight_df|>
 ```
 
 ```{r}
+prediction_result|>
+  ggplot(
+    aes(x=pred, y=resid)
+  )+
+  geom_point()+ 
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red")
+```
+
+We do see that ridisual scatter around 0 evenly. 
+
+```{r}
+library(purrr)
 cv_df = 
   crossv_mc(birthweight_df, 100)
   
